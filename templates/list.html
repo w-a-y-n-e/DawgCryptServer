@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Encrypted Devices</title>
+</head>
+<body>
+<table border="1">
+    <tr><th>IP</th><th>UUID</th><th>Key</th><th>Decryption Authorized</th><th>Authorize Decryption</th></tr>
+{% for device in encrypted_devices %}
+    <tr><td>{{ device['ip'] }}</td><td>{{ device['uuid'] }}</td><td>{{ device['key'] }}</td><td>{% if (device['decrypt_authorized']==0) %}False{% else %}True{% endif %} </td><td><a href="{{ url_for('decrypt',server=server_uuid,uuid=device['uuid'])}}">Authorize Decryption</a></td></tr>
+    {% endfor %}
+</table>
+<form action="/resetdatabase/{{ server_uuid }}"><input type="Submit" value="Reset Database" /></form>
+</body>
+</html>
