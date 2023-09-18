@@ -4,6 +4,7 @@ import pathlib
 import uuid
 import sqlite3
 
+authorized_client_ip_start="127.0."
 def get_db_connection():
     conn = sqlite3.connect('database.db')
     conn.row_factory = sqlite3.Row
@@ -21,12 +22,11 @@ if not (pathlib.Path('database.db').is_file()):
     reset_database()
 
 server_uuid=uuid.uuid4()
-
 app = Flask(__name__)
 
 @app.route("/")
 def device_listing():
-    if(request.remote_addr=="127.0.0.1"):
+    if(request.remote_addr.startswith(authorized_client_ip_start)):
         conn = get_db_connection()
         devices = conn.execute('SELECT * FROM devices').fetchall()
         conn.close()
